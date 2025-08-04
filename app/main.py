@@ -1,13 +1,18 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from app.config import settings
-from app.routers import currencies, customers, orders
+from app.routers import currencies, customers, orders, inventory, subpositions
 from app.database import Base, engine
 
-# Create database tables
-Base.metadata.create_all(bind=engine)
+# Create database tables (only if database is available)
+try:
+    Base.metadata.create_all(bind=engine)
+except Exception as e:
+    print(f"⚠️  Warning: Could not connect to database: {e}")
+    print("   Make sure to configure your database connection in .env file")
+    print("   The API will still start but database operations will fail")
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -31,6 +36,8 @@ app.add_middleware(
 app.include_router(currencies.router, prefix=settings.API_V1_STR)
 app.include_router(customers.router, prefix=settings.API_V1_STR)
 app.include_router(orders.router, prefix=settings.API_V1_STR)
+app.include_router(inventory.router, prefix=settings.API_V1_STR)
+app.include_router(subpositions.router, prefix=settings.API_V1_STR)
 
 
 @app.get("/")
@@ -56,7 +63,7 @@ async def health_check():
 
 # Global exception handler
 @app.exception_handler(Exception)
-async def global_exception_handler(request, exc):
+async def global_exception_handler(request: Request, exc: Exception):
     return JSONResponse(
         status_code=500,
         content={

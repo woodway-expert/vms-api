@@ -1,6 +1,7 @@
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import IntegrityError, OperationalError
 
 from app.database import get_db
 from app.models.customer import Customer
@@ -28,15 +29,25 @@ def get_customers(
     """
     Retrieve all customers with pagination and optional filtering.
     """
-    query = db.query(Customer)
+    try:
+        query = db.query(Customer)
 
-    if company_name:
-        query = query.filter(Customer.CompanyName.contains(company_name))
-    if city:
-        query = query.filter(Customer.City == city)
+        if company_name:
+            query = query.filter(Customer.CompanyName.contains(company_name))
+        if city:
+            query = query.filter(Customer.City == city)
 
-    customers = query.offset(skip).limit(limit).all()
-    return customers
+        customers = query.offset(skip).limit(limit).all()
+        return customers
+    except OperationalError as e:
+        # Handle database table/connection issues
+        raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(
+            status_code=500,
+            detail=f"An error occurred while retrieving customers: {str(e)}",
+        )
 
 
 @router.get("/{customer_id}", response_model=CustomerSchema)
@@ -44,10 +55,23 @@ def get_customer(customer_id: int, db: Session = Depends(get_db)):
     """
     Retrieve a specific customer by ID.
     """
-    customer = db.query(Customer).filter(Customer.CustomerID == customer_id).first()
-    if not customer:
-        raise HTTPException(status_code=404, detail="Customer not found")
-    return customer
+    try:
+        customer = db.query(Customer).filter(Customer.CustomerID == customer_id).first()
+        if not customer:
+            raise HTTPException(status_code=404, detail="Customer not found")
+        return customer
+    except HTTPException:
+        # Re-raise HTTP exceptions (like 404)
+        raise
+    except OperationalError as e:
+        # Handle database table/connection issues
+        raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(
+            status_code=500,
+            detail=f"An error occurred while retrieving customer: {str(e)}",
+        )
 
 
 @router.post("/", response_model=CustomerSchema)
@@ -55,11 +79,23 @@ def create_customer(customer: CustomerCreate, db: Session = Depends(get_db)):
     """
     Create a new customer.
     """
-    db_customer = Customer(**customer.model_dump())
-    db.add(db_customer)
-    db.commit()
-    db.refresh(db_customer)
-    return db_customer
+    try:
+        db_customer = Customer(**customer.model_dump())
+        db.add(db_customer)
+        db.commit()
+        db.refresh(db_customer)
+        return db_customer
+    except IntegrityError:
+        db.rollback()
+        raise HTTPException(
+            status_code=400,
+            detail="Customer with this data already exists or constraint violated",
+        )
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(
+            status_code=500, detail=f"Failed to create customer: {str(e)}"
+        )
 
 
 @router.put("/{customer_id}", response_model=CustomerSchema)
@@ -73,13 +109,24 @@ def update_customer(
     if not customer:
         raise HTTPException(status_code=404, detail="Customer not found")
 
-    update_data = customer_update.model_dump(exclude_unset=True)
-    for field, value in update_data.items():
-        setattr(customer, field, value)
+    try:
+        update_data = customer_update.model_dump(exclude_unset=True)
+        for field, value in update_data.items():
+            setattr(customer, field, value)
 
-    db.commit()
-    db.refresh(customer)
-    return customer
+        db.commit()
+        db.refresh(customer)
+        return customer
+    except IntegrityError:
+        db.rollback()
+        raise HTTPException(
+            status_code=400, detail="Update failed due to constraint violation"
+        )
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(
+            status_code=500, detail=f"Failed to update customer: {str(e)}"
+        )
 
 
 @router.delete("/{customer_id}")

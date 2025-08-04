@@ -2,6 +2,7 @@ from typing import List
 from uuid import UUID
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import IntegrityError, OperationalError
 
 from app.database import get_db
 from app.models.order import Order
@@ -25,15 +26,25 @@ def get_orders(
     """
     Retrieve all orders with pagination and optional filtering.
     """
-    query = db.query(Order)
+    try:
+        query = db.query(Order)
 
-    if customer_id:
-        query = query.filter(Order.CustomerID == customer_id)
-    if status is not None:
-        query = query.filter(Order.OrderStatus == status)
+        if customer_id:
+            query = query.filter(Order.CustomerID == customer_id)
+        if status is not None:
+            query = query.filter(Order.OrderStatus == status)
 
-    orders = query.offset(skip).limit(limit).all()
-    return orders
+        orders = query.offset(skip).limit(limit).all()
+        return orders
+    except OperationalError as e:
+        # Handle database table/connection issues
+        raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(
+            status_code=500,
+            detail=f"An error occurred while retrieving orders: {str(e)}",
+        )
 
 
 @router.get("/{order_id}", response_model=OrderSchema)
