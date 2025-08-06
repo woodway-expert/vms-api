@@ -7,6 +7,8 @@ from sqlalchemy.exc import IntegrityError, OperationalError
 from app.database import get_db
 from app.models.order import Order
 from app.schemas.order import Order as OrderSchema, OrderCreate, OrderUpdate
+from app.routers.auth import get_current_user
+from app.models.user import User as UserModel
 
 router = APIRouter(
     prefix="/orders",
@@ -22,6 +24,7 @@ def get_orders(
     customer_id: int = Query(None, description="Filter by customer ID"),
     status: int = Query(None, description="Filter by order status"),
     db: Session = Depends(get_db),
+    current_user: UserModel = Depends(get_current_user),
 ):
     """
     Retrieve all orders with pagination and optional filtering.
@@ -48,7 +51,11 @@ def get_orders(
 
 
 @router.get("/{order_id}", response_model=OrderSchema)
-def get_order(order_id: UUID, db: Session = Depends(get_db)):
+def get_order(
+    order_id: UUID,
+    db: Session = Depends(get_db),
+    current_user: UserModel = Depends(get_current_user),
+):
     """
     Retrieve a specific order by ID.
     """
@@ -59,7 +66,11 @@ def get_order(order_id: UUID, db: Session = Depends(get_db)):
 
 
 @router.post("/", response_model=OrderSchema)
-def create_order(order: OrderCreate, db: Session = Depends(get_db)):
+def create_order(
+    order: OrderCreate,
+    db: Session = Depends(get_db),
+    current_user: UserModel = Depends(get_current_user),
+):
     """
     Create a new order.
     """
@@ -72,7 +83,10 @@ def create_order(order: OrderCreate, db: Session = Depends(get_db)):
 
 @router.put("/{order_id}", response_model=OrderSchema)
 def update_order(
-    order_id: UUID, order_update: OrderUpdate, db: Session = Depends(get_db)
+    order_id: UUID,
+    order_update: OrderUpdate,
+    db: Session = Depends(get_db),
+    current_user: UserModel = Depends(get_current_user),
 ):
     """
     Update an existing order.
@@ -91,7 +105,11 @@ def update_order(
 
 
 @router.delete("/{order_id}")
-def delete_order(order_id: UUID, db: Session = Depends(get_db)):
+def delete_order(
+    order_id: UUID,
+    db: Session = Depends(get_db),
+    current_user: UserModel = Depends(get_current_user),
+):
     """
     Delete an order.
     """

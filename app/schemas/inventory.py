@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Optional
 from uuid import UUID
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 
 
 class SoldOtherGoodBase(BaseModel):
@@ -59,5 +59,4 @@ class SoldOtherGoodUpdate(BaseModel):
 class SoldOtherGood(SoldOtherGoodBase):
     OtherGoodsId: UUID = Field(..., description="Other goods ID")
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)

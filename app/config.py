@@ -9,9 +9,12 @@ class Settings:
     )
 
     # Security
-    SECRET_KEY: str = config("SECRET_KEY", default="your-secret-key-here")
+    SECRET_KEY: str = config(
+        "SECRET_KEY", default="a_very_secret_key_that_should_be_in_env_file"
+    )
+    ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = config(
-        "ACCESS_TOKEN_EXPIRE_MINUTES", default=30, cast=int
+        "ACCESS_TOKEN_EXPIRE_MINUTES", default=60, cast=int
     )
 
     # Application

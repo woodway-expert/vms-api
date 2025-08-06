@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Optional, List
 from uuid import UUID
-from pydantic import BaseModel, Field, EmailStr
+from pydantic import BaseModel, Field, EmailStr, ConfigDict
 
 
 class CustomerBase(BaseModel):
@@ -61,12 +61,10 @@ class Customer(CustomerBase):
         None, description="Last sync date with Binotel"
     )
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class CustomerWithOrders(Customer):
     orders: List["Order"] = Field(default=[], description="Customer orders")
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)

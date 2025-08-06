@@ -9,6 +9,8 @@ from app.schemas.currency import (
     CourseCurrencyCreate,
     CourseCurrencyUpdate,
 )
+from app.routers.auth import get_current_user
+from app.models.user import User as UserModel
 
 router = APIRouter(
     prefix="/currencies",
@@ -22,6 +24,7 @@ def get_currencies(
     skip: int = Query(0, ge=0, description="Number of records to skip"),
     limit: int = Query(50, ge=1, le=1000, description="Number of records to return"),
     db: Session = Depends(get_db),
+    current_user: UserModel = Depends(get_current_user),
 ):
     """
     Retrieve all currency rates with pagination.
@@ -31,7 +34,11 @@ def get_currencies(
 
 
 @router.get("/{currency_id}", response_model=CourseCurrencySchema)
-def get_currency(currency_id: int, db: Session = Depends(get_db)):
+def get_currency(
+    currency_id: int,
+    db: Session = Depends(get_db),
+    current_user: UserModel = Depends(get_current_user),
+):
     """
     Retrieve a specific currency rate by ID.
     """
@@ -46,11 +53,15 @@ def get_currency(currency_id: int, db: Session = Depends(get_db)):
 
 
 @router.post("/", response_model=CourseCurrencySchema)
-def create_currency(currency: CourseCurrencyCreate, db: Session = Depends(get_db)):
+def create_currency(
+    currency: CourseCurrencyCreate,
+    db: Session = Depends(get_db),
+    current_user: UserModel = Depends(get_current_user),
+):
     """
     Create a new currency rate.
     """
-    db_currency = CourseCurrency(**currency.dict())
+    db_currency = CourseCurrency(**currency.model_dump())
     db.add(db_currency)
     db.commit()
     db.refresh(db_currency)
@@ -62,6 +73,7 @@ def update_currency(
     currency_id: int,
     currency_update: CourseCurrencyUpdate,
     db: Session = Depends(get_db),
+    current_user: UserModel = Depends(get_current_user),
 ):
     """
     Update an existing currency rate.
@@ -74,7 +86,7 @@ def update_currency(
     if not currency:
         raise HTTPException(status_code=404, detail="Currency rate not found")
 
-    update_data = currency_update.dict(exclude_unset=True)
+    update_data = currency_update.model_dump(exclude_unset=True)
     for field, value in update_data.items():
         setattr(currency, field, value)
 
@@ -84,7 +96,11 @@ def update_currency(
 
 
 @router.delete("/{currency_id}")
-def delete_currency(currency_id: int, db: Session = Depends(get_db)):
+def delete_currency(
+    currency_id: int,
+    db: Session = Depends(get_db),
+    current_user: UserModel = Depends(get_current_user),
+):
     """
     Delete a currency rate.
     """

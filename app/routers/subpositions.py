@@ -10,6 +10,8 @@ from app.schemas.subposition import (
     SubPositionCreate,
     SubPositionUpdate,
 )
+from app.routers.auth import get_current_user
+from app.models.user import User as UserModel
 
 router = APIRouter(
     prefix="/subpositions",
@@ -25,6 +27,7 @@ def get_subpositions(
     position_id: Optional[str] = Query(None, description="Filter by position ID"),
     breed_name: Optional[str] = Query(None, description="Filter by breed name"),
     db: Session = Depends(get_db),
+    current_user: UserModel = Depends(get_current_user),
 ):
     """
     Retrieve all subpositions with pagination and optional filtering.
@@ -46,7 +49,11 @@ def get_subpositions(
 
 
 @router.get("/{subposition_id}", response_model=SubPositionSchema)
-def get_subposition(subposition_id: str, db: Session = Depends(get_db)):
+def get_subposition(
+    subposition_id: str,
+    db: Session = Depends(get_db),
+    current_user: UserModel = Depends(get_current_user),
+):
     """
     Retrieve a specific subposition by ID.
     """
@@ -61,7 +68,11 @@ def get_subposition(subposition_id: str, db: Session = Depends(get_db)):
 
 
 @router.post("/", response_model=SubPositionSchema)
-def create_subposition(subposition: SubPositionCreate, db: Session = Depends(get_db)):
+def create_subposition(
+    subposition: SubPositionCreate,
+    db: Session = Depends(get_db),
+    current_user: UserModel = Depends(get_current_user),
+):
     """
     Create a new subposition.
     """
@@ -89,6 +100,7 @@ def update_subposition(
     subposition_id: str,
     subposition_update: SubPositionUpdate,
     db: Session = Depends(get_db),
+    current_user: UserModel = Depends(get_current_user),
 ):
     """
     Update an existing subposition.
@@ -111,7 +123,11 @@ def update_subposition(
 
 
 @router.delete("/{subposition_id}")
-def delete_subposition(subposition_id: str, db: Session = Depends(get_db)):
+def delete_subposition(
+    subposition_id: str,
+    db: Session = Depends(get_db),
+    current_user: UserModel = Depends(get_current_user),
+):
     """
     Delete a subposition.
     """

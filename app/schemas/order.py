@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Optional, List
 from uuid import UUID
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 
 
 class OrderBase(BaseModel):
@@ -74,8 +74,7 @@ class Order(OrderBase):
     OrderID: UUID = Field(..., description="Order ID")
     LastDateChange: Optional[datetime] = Field(None, description="Last change date")
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class OrderWithRelations(Order):
@@ -84,5 +83,4 @@ class OrderWithRelations(Order):
         default=[], description="Order sub-positions"
     )
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)

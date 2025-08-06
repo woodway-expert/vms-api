@@ -10,6 +10,8 @@ from app.schemas.inventory import (
     SoldOtherGoodCreate,
     SoldOtherGoodUpdate,
 )
+from app.routers.auth import get_current_user
+from app.models.user import User as UserModel
 
 router = APIRouter(
     prefix="/inventory",
@@ -25,6 +27,7 @@ def get_inventory_items(
     is_sold: Optional[bool] = Query(None, description="Filter by sold status"),
     stock_id: Optional[int] = Query(None, description="Filter by stock ID"),
     db: Session = Depends(get_db),
+    current_user: UserModel = Depends(get_current_user),
 ):
     """
     Retrieve all inventory items with pagination and optional filtering.
@@ -46,7 +49,11 @@ def get_inventory_items(
 
 
 @router.get("/{item_id}", response_model=SoldOtherGoodSchema)
-def get_inventory_item(item_id: str, db: Session = Depends(get_db)):
+def get_inventory_item(
+    item_id: str,
+    db: Session = Depends(get_db),
+    current_user: UserModel = Depends(get_current_user),
+):
     """
     Retrieve a specific inventory item by ID.
     """
@@ -59,7 +66,11 @@ def get_inventory_item(item_id: str, db: Session = Depends(get_db)):
 
 
 @router.post("/", response_model=SoldOtherGoodSchema)
-def create_inventory_item(item: SoldOtherGoodCreate, db: Session = Depends(get_db)):
+def create_inventory_item(
+    item: SoldOtherGoodCreate,
+    db: Session = Depends(get_db),
+    current_user: UserModel = Depends(get_current_user),
+):
     """
     Create a new inventory item.
     """
@@ -84,7 +95,10 @@ def create_inventory_item(item: SoldOtherGoodCreate, db: Session = Depends(get_d
 
 @router.put("/{item_id}", response_model=SoldOtherGoodSchema)
 def update_inventory_item(
-    item_id: str, item_update: SoldOtherGoodUpdate, db: Session = Depends(get_db)
+    item_id: str,
+    item_update: SoldOtherGoodUpdate,
+    db: Session = Depends(get_db),
+    current_user: UserModel = Depends(get_current_user),
 ):
     """
     Update an existing inventory item.
@@ -116,7 +130,11 @@ def update_inventory_item(
 
 
 @router.delete("/{item_id}")
-def delete_inventory_item(item_id: str, db: Session = Depends(get_db)):
+def delete_inventory_item(
+    item_id: str,
+    db: Session = Depends(get_db),
+    current_user: UserModel = Depends(get_current_user),
+):
     """
     Delete an inventory item.
     """

@@ -3,7 +3,16 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from app.config import settings
-from app.routers import currencies, customers, orders, inventory, subpositions
+from app.routers import (
+    currencies,
+    customers,
+    orders,
+    inventory,
+    subpositions,
+    auth,
+    reports,
+    admin,
+)
 from app.database import Base, engine
 
 # Create database tables (only if database is available)
@@ -38,6 +47,9 @@ app.include_router(customers.router, prefix=settings.API_V1_STR)
 app.include_router(orders.router, prefix=settings.API_V1_STR)
 app.include_router(inventory.router, prefix=settings.API_V1_STR)
 app.include_router(subpositions.router, prefix=settings.API_V1_STR)
+app.include_router(auth.router, prefix="/api/auth", tags=["Authentication"])
+app.include_router(reports.router, prefix=settings.API_V1_STR)
+app.include_router(admin.router, prefix=settings.API_V1_STR)
 
 
 @app.get("/")

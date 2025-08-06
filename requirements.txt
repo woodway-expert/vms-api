@@ -9,6 +9,7 @@ passlib[bcrypt]==1.7.4
 python-decouple==3.8
 pymssql==2.2.8
 email-validator==2.0.0
+fastapi-pagination==0.12.5
 # Alternative SQL Server drivers (uncomment if needed):
 # pyodbc==5.0.1
 # Optional PostgreSQL support (install if needed):

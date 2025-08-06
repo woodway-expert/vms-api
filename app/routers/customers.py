@@ -10,6 +10,8 @@ from app.schemas.customer import (
     CustomerCreate,
     CustomerUpdate,
 )
+from app.routers.auth import get_current_user
+from app.models.user import User as UserModel
 
 router = APIRouter(
     prefix="/customers",
@@ -25,6 +27,7 @@ def get_customers(
     company_name: str = Query(None, description="Filter by company name"),
     city: str = Query(None, description="Filter by city"),
     db: Session = Depends(get_db),
+    current_user: UserModel = Depends(get_current_user),
 ):
     """
     Retrieve all customers with pagination and optional filtering.
@@ -51,7 +54,11 @@ def get_customers(
 
 
 @router.get("/{customer_id}", response_model=CustomerSchema)
-def get_customer(customer_id: int, db: Session = Depends(get_db)):
+def get_customer(
+    customer_id: int,
+    db: Session = Depends(get_db),
+    current_user: UserModel = Depends(get_current_user),
+):
     """
     Retrieve a specific customer by ID.
     """
@@ -75,7 +82,11 @@ def get_customer(customer_id: int, db: Session = Depends(get_db)):
 
 
 @router.post("/", response_model=CustomerSchema)
-def create_customer(customer: CustomerCreate, db: Session = Depends(get_db)):
+def create_customer(
+    customer: CustomerCreate,
+    db: Session = Depends(get_db),
+    current_user: UserModel = Depends(get_current_user),
+):
     """
     Create a new customer.
     """
@@ -100,7 +111,10 @@ def create_customer(customer: CustomerCreate, db: Session = Depends(get_db)):
 
 @router.put("/{customer_id}", response_model=CustomerSchema)
 def update_customer(
-    customer_id: int, customer_update: CustomerUpdate, db: Session = Depends(get_db)
+    customer_id: int,
+    customer_update: CustomerUpdate,
+    db: Session = Depends(get_db),
+    current_user: UserModel = Depends(get_current_user),
 ):
     """
     Update an existing customer.
@@ -130,7 +144,11 @@ def update_customer(
 
 
 @router.delete("/{customer_id}")
-def delete_customer(customer_id: int, db: Session = Depends(get_db)):
+def delete_customer(
+    customer_id: int,
+    db: Session = Depends(get_db),
+    current_user: UserModel = Depends(get_current_user),
+):
     """
     Delete a customer.
     """
