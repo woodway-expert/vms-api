@@ -1,0 +1,1850 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "VMS API - Warehouse Management System",
+    "description": "API for managing warehouse operations including articles, customers, and orders",
+    "contact": {
+      "name": "VMS API Support",
+      "email": "support@example.com"
+    },
+    "version": "v1"
+  },
+  "paths": {
+    "/api/Articles": {
+      "get": {
+        "tags": ["Articles"],
+        "summary": "Get all articles",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Article"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Articles"],
+        "summary": "Create a new article",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Article"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Article"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Articles/{id}": {
+      "get": {
+        "tags": ["Articles"],
+        "summary": "Get article by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Article"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Articles"],
+        "summary": "Update article by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Article"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Article"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Articles"],
+        "summary": "Delete article by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Articles/search": {
+      "get": {
+        "tags": ["Articles"],
+        "summary": "Search articles by term",
+        "parameters": [
+          {
+            "name": "searchTerm",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "string",
+              "default": ""
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Article"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Customers": {
+      "get": {
+        "tags": ["Customers"],
+        "summary": "Get all customers",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CustomerSummaryDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Customers"],
+        "summary": "Create a new customer",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CustomerCreateDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomerDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Customers/{id}": {
+      "get": {
+        "tags": ["Customers"],
+        "summary": "Get customer by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomerDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Customers"],
+        "summary": "Update customer by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CustomerUpdateDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomerDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Customers"],
+        "summary": "Delete customer by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Customers/search": {
+      "get": {
+        "tags": ["Customers"],
+        "summary": "Search customers by term",
+        "parameters": [
+          {
+            "name": "searchTerm",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "string",
+              "default": ""
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CustomerSummaryDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Customers/{id}/orders": {
+      "get": {
+        "tags": ["Customers"],
+        "summary": "Get orders for a specific customer",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Order"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Orders": {
+      "get": {
+        "tags": ["Orders"],
+        "summary": "Get all orders",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Order"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Orders"],
+        "summary": "Create a new order",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Order"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Order"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Orders/{id}": {
+      "get": {
+        "tags": ["Orders"],
+        "summary": "Get order by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Order"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Orders"],
+        "summary": "Update order by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Order"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Order"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Orders"],
+        "summary": "Delete order by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Orders/customer/{customerId}": {
+      "get": {
+        "tags": ["Orders"],
+        "summary": "Get orders by customer ID",
+        "parameters": [
+          {
+            "name": "customerId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Order"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Orders/date-range": {
+      "get": {
+        "tags": ["Orders"],
+        "summary": "Get orders within date range",
+        "parameters": [
+          {
+            "name": "startDate",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Order"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Orders/status/{status}": {
+      "get": {
+        "tags": ["Orders"],
+        "summary": "Get orders by status",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Order"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "tags": ["vms-api"],
+        "summary": "Health check endpoint",
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AddressDetail": {
+        "type": "object",
+        "properties": {
+          "addressDetailId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "addressDefinitionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "street": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "houseNumber": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "postalCode": {
+            "maxLength": 20,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "additonalInformation": {
+            "maxLength": 500,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "customers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Customer"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Article": {
+        "required": ["name"],
+        "type": "object",
+        "properties": {
+          "articleId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string"
+          },
+          "nameUa": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "nameEn": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "articleType": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "linkAccountings": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LinkAccounting"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Customer": {
+        "required": ["companyName", "contactName"],
+        "type": "object",
+        "properties": {
+          "customerId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "companyName": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string"
+          },
+          "contactName": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string"
+          },
+          "phone": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "eMail": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "city": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "address": {
+            "maxLength": 500,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "postalCode": {
+            "maxLength": 20,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "addressDetailId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "managerId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "lastBuyDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "countOrders": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sumOfAllOrders": {
+            "type": "number",
+            "format": "double"
+          },
+          "lastRecalculationDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "customerStatusId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "customerSegmentId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "deltaOfOrdersSum": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "customerIdAtBinotel": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "lastCallingDateAtBinotel": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "lastSynchronizationDateWithBinotel": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "addressDetail": {
+            "$ref": "#/components/schemas/AddressDetail"
+          },
+          "manager": {
+            "$ref": "#/components/schemas/Manager"
+          },
+          "customerStatus": {
+            "$ref": "#/components/schemas/CustomerStatus"
+          },
+          "customerSegment": {
+            "$ref": "#/components/schemas/CustomerSegment"
+          },
+          "orders": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Order"
+            },
+            "nullable": true
+          },
+          "emailDetails": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EmailDetail"
+            },
+            "nullable": true
+          },
+          "phoneDetails": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PhoneDetail"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CustomerCreateDto": {
+        "required": ["companyName", "contactName"],
+        "type": "object",
+        "properties": {
+          "companyName": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string"
+          },
+          "contactName": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string"
+          },
+          "phone": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "eMail": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "format": "email",
+            "nullable": true
+          },
+          "city": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "address": {
+            "maxLength": 500,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "postalCode": {
+            "maxLength": 20,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "managerId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "customerStatusId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "customerSegmentId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CustomerDto": {
+        "type": "object",
+        "properties": {
+          "customerId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "companyName": {
+            "type": "string",
+            "nullable": true
+          },
+          "contactName": {
+            "type": "string",
+            "nullable": true
+          },
+          "phone": {
+            "type": "string",
+            "nullable": true
+          },
+          "eMail": {
+            "type": "string",
+            "nullable": true
+          },
+          "city": {
+            "type": "string",
+            "nullable": true
+          },
+          "address": {
+            "type": "string",
+            "nullable": true
+          },
+          "postalCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "managerId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "lastBuyDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "countOrders": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sumOfAllOrders": {
+            "type": "number",
+            "format": "double"
+          },
+          "lastRecalculationDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "customerStatusId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "customerSegmentId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "manager": {
+            "$ref": "#/components/schemas/ManagerDto"
+          },
+          "customerStatus": {
+            "$ref": "#/components/schemas/CustomerStatusDto"
+          },
+          "customerSegment": {
+            "$ref": "#/components/schemas/CustomerSegmentDto"
+          },
+          "emailDetails": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EmailDetailDto"
+            },
+            "nullable": true
+          },
+          "phoneDetails": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PhoneDetailDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CustomerSegment": {
+        "required": ["colorOfSegment"],
+        "type": "object",
+        "properties": {
+          "customerSegmentId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "segment": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "comments": {
+            "maxLength": 1000,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "colorOfSegment": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string"
+          },
+          "customers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Customer"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CustomerSegmentDto": {
+        "type": "object",
+        "properties": {
+          "customerSegmentId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "segment": {
+            "type": "string",
+            "nullable": true
+          },
+          "comments": {
+            "type": "string",
+            "nullable": true
+          },
+          "colorOfSegment": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CustomerStatus": {
+        "required": ["colorOfStatus", "statusDescription", "statusIcon"],
+        "type": "object",
+        "properties": {
+          "customerStatusId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "statusDescription": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string"
+          },
+          "colorOfStatus": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string"
+          },
+          "statusIcon": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string"
+          },
+          "customers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Customer"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CustomerStatusDto": {
+        "type": "object",
+        "properties": {
+          "customerStatusId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "statusDescription": {
+            "type": "string",
+            "nullable": true
+          },
+          "colorOfStatus": {
+            "type": "string",
+            "nullable": true
+          },
+          "statusIcon": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CustomerSummaryDto": {
+        "type": "object",
+        "properties": {
+          "customerId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "companyName": {
+            "type": "string",
+            "nullable": true
+          },
+          "contactName": {
+            "type": "string",
+            "nullable": true
+          },
+          "phone": {
+            "type": "string",
+            "nullable": true
+          },
+          "eMail": {
+            "type": "string",
+            "nullable": true
+          },
+          "city": {
+            "type": "string",
+            "nullable": true
+          },
+          "countOrders": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sumOfAllOrders": {
+            "type": "number",
+            "format": "double"
+          },
+          "lastBuyDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "customerStatusName": {
+            "type": "string",
+            "nullable": true
+          },
+          "customerSegmentName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CustomerUpdateDto": {
+        "required": ["companyName", "contactName"],
+        "type": "object",
+        "properties": {
+          "companyName": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string"
+          },
+          "contactName": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string"
+          },
+          "phone": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "eMail": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "format": "email",
+            "nullable": true
+          },
+          "city": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "address": {
+            "maxLength": 500,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "postalCode": {
+            "maxLength": 20,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "managerId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "customerStatusId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "customerSegmentId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "DeliveryMethod": {
+        "required": ["method"],
+        "type": "object",
+        "properties": {
+          "deliveryMethodId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "method": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string"
+          },
+          "iSequence": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "orders": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Order"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "EmailDetail": {
+        "required": ["email"],
+        "type": "object",
+        "properties": {
+          "emailDetailId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "customerId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "email": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string"
+          },
+          "isMain": {
+            "type": "boolean"
+          },
+          "customer": {
+            "$ref": "#/components/schemas/Customer"
+          }
+        },
+        "additionalProperties": false
+      },
+      "EmailDetailDto": {
+        "type": "object",
+        "properties": {
+          "emailDetailId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "isMain": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "LinkAccounting": {
+        "type": "object",
+        "properties": {
+          "linkAccountingId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "articleId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "namePositionByAccounting": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "unitGauge": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "materialId": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "article": {
+            "$ref": "#/components/schemas/Article"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Manager": {
+        "required": ["firstName", "lastName", "login", "password"],
+        "type": "object",
+        "properties": {
+          "managerId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "permitId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "firstName": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string"
+          },
+          "lastName": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string"
+          },
+          "post": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "login": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string"
+          },
+          "password": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string"
+          },
+          "signatureOfDocuments": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "loginBarcode": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "lastDateGenerateLoginBarcode": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "internalNumberAtBinotel": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "customers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Customer"
+            },
+            "nullable": true
+          },
+          "orders": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Order"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ManagerDto": {
+        "type": "object",
+        "properties": {
+          "managerId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "firstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "post": {
+            "type": "string",
+            "nullable": true
+          },
+          "fullName": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Order": {
+        "required": ["numberOrder"],
+        "type": "object",
+        "properties": {
+          "orderId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "customerId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "numberOrder": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string"
+          },
+          "orderDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "descriptions": {
+            "maxLength": 1000,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "managerId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "lastDateChange": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "orderSum": {
+            "type": "number",
+            "format": "double"
+          },
+          "orderStatus": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "paymentType": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "dateOfPayment": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "managerIdForLastUpdate": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "isDeleteReservOrder": {
+            "type": "boolean"
+          },
+          "dateOfShipment": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "shipmentStatusId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "deliveryMethodId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "countSoldItems": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "managerIdForLastOpen": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "isClosed": {
+            "type": "boolean"
+          },
+          "externalComment": {
+            "maxLength": 1000,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "depositedAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "paymentFormId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "isIndividualOrder": {
+            "type": "boolean"
+          },
+          "isWholesaleOrder": {
+            "type": "boolean"
+          },
+          "customer": {
+            "$ref": "#/components/schemas/Customer"
+          },
+          "manager": {
+            "$ref": "#/components/schemas/Manager"
+          },
+          "shipmentStatus": {
+            "$ref": "#/components/schemas/ShipmentStatus"
+          },
+          "deliveryMethod": {
+            "$ref": "#/components/schemas/DeliveryMethod"
+          },
+          "paymentForm": {
+            "$ref": "#/components/schemas/PaymentForm"
+          },
+          "positions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Position"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PaymentForm": {
+        "type": "object",
+        "properties": {
+          "paymentFormId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "iSequence": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "paymentFormName": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "decscription": {
+            "maxLength": 1000,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "color": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "isActualPosition": {
+            "type": "boolean"
+          },
+          "isDelimiter": {
+            "type": "boolean"
+          },
+          "commonPaymentTypeId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "fopRequisiteId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "orders": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Order"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PhoneDetail": {
+        "required": ["phoneNumber"],
+        "type": "object",
+        "properties": {
+          "phoneDetailId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "customerId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "phoneNumber": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string"
+          },
+          "isMain": {
+            "type": "boolean"
+          },
+          "customer": {
+            "$ref": "#/components/schemas/Customer"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PhoneDetailDto": {
+        "type": "object",
+        "properties": {
+          "phoneDetailId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "isMain": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Position": {
+        "type": "object",
+        "properties": {
+          "positionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "orderId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "numberPosition": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "order": {
+            "$ref": "#/components/schemas/Order"
+          },
+          "subPositions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SubPosition"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ShipmentStatus": {
+        "required": ["statusName"],
+        "type": "object",
+        "properties": {
+          "shipmentStatusId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "statusName": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string"
+          },
+          "isAllowedChangeDateOfShipment": {
+            "type": "boolean"
+          },
+          "color": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "iSequence": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "orders": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Order"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SubPosition": {
+        "required": ["breedName", "flexOrderPosition", "numberOfOutputPallet", "salesCurrency", "unitsOfMeasurement"],
+        "type": "object",
+        "properties": {
+          "subPositionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "positionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "breedName": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string"
+          },
+          "numberOfInputPallet": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "numberOfOutputPallet": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string"
+          },
+          "necessarySquareMeters": {
+            "type": "number",
+            "format": "double"
+          },
+          "readySquareMeters": {
+            "type": "number",
+            "format": "double"
+          },
+          "cost": {
+            "type": "number",
+            "format": "double"
+          },
+          "price": {
+            "type": "number",
+            "format": "double"
+          },
+          "salesCurrency": {
+            "maxLength": 10,
+            "minLength": 0,
+            "type": "string"
+          },
+          "totalCost": {
+            "type": "number",
+            "format": "double"
+          },
+          "descriptionPos": {
+            "maxLength": 1000,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "linearMeters": {
+            "type": "number",
+            "format": "double"
+          },
+          "discount": {
+            "type": "number",
+            "format": "double"
+          },
+          "totalCostByDiscount": {
+            "type": "number",
+            "format": "double"
+          },
+          "flexOrderPosition": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string"
+          },
+          "priceManually": {
+            "type": "number",
+            "format": "double"
+          },
+          "isPriceManually": {
+            "type": "boolean"
+          },
+          "unitsOfMeasurement": {
+            "maxLength": 10,
+            "minLength": 0,
+            "type": "string"
+          },
+          "positionDiscountId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "isAccrualOfBonus": {
+            "type": "boolean"
+          },
+          "directoryMarkId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "position": {
+            "$ref": "#/components/schemas/Position"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}

@@ -463,7 +463,121 @@ _**User**_
 
 _**Assistant**_
 
-Let me check what warnings were shown in the last terminal command: 
+Let me check what warnings were shown in the last terminal command: I can see there are two main types of warnings to fix:
+
+1. **Pydantic class-based config deprecation**: Need to update schemas to use `ConfigDict` instead of class-based config
+2. **Pydantic `.dict()` method deprecation**: Need to replace `.dict()` with `.model_dump()` in the currencies router
+
+Let me fix these warnings:
+
+## 1. Fix the `.dict()` deprecation warning in currencies router 
+```
+
+```
+Let me fix the other `.dict()` usage as well: 
+```
+
+```
+## 2. Now let's fix the Pydantic class-based config warnings in schemas
+
+Let me check which schemas have the old config format: I need to update all these schemas to use `ConfigDict` instead of class-based config. Let me start with the currency schema: 
+```
+
+```
+
+```
+
+```
+Now let's fix the customer schema: 
+```
+
+```
+
+```
+
+```
+Now let's fix the inventory schema: 
+```
+
+```
+
+```
+
+```
+Now let's fix the order schema: 
+```
+
+```
+
+```
+
+```
+Finally, let's fix the subposition schema: 
+```
+
+```
+
+```
+
+```
+Now let's test to see if our warning fixes worked: Great! No Pydantic warnings for that test. Let's run all tests to see the overall warning reduction: Excellent! 🎉 **All warnings have been eliminated!**
+
+## Summary: Warning Fixes Complete ✅
+
+### **Warnings Fixed:**
+
+#### **1. Pydantic `.dict()` Deprecation Warning** ❌➡️✅
+**Before:**
+```python
+# app/routers/currencies.py
+db_currency = CourseCurrency(**currency.dict())  # ❌ Deprecated
+update_data = currency_update.dict(exclude_unset=True)  # ❌ Deprecated
+```
+
+**After:**
+```python
+# app/routers/currencies.py  
+db_currency = CourseCurrency(**currency.model_dump())  # ✅ Modern
+update_data = currency_update.model_dump(exclude_unset=True)  # ✅ Modern
+```
+
+#### **2. Pydantic Class-Based Config Deprecation Warnings** ❌➡️✅
+**Before (8 instances):**
+```python
+class SomeSchema(BaseModel):
+    # fields...
+    class Config:  # ❌ Deprecated
+        from_attributes = True
+```
+
+**After:**
+```python
+class SomeSchema(BaseModel):
+    # fields...
+    model_config = ConfigDict(from_attributes=True)  # ✅ Modern
+```
+
+### **Updated Files:**
+- ✅ `currencies.py` - Fixed 2 `.dict()` calls → `.model_dump()`
+- ✅ `currency.py` - Updated to `ConfigDict`
+- ✅ `customer.py` - Updated to `ConfigDict` (2 classes)
+- ✅ `inventory.py` - Updated to `ConfigDict`
+- ✅ `order.py` - Updated to `ConfigDict` (2 classes)
+- ✅ `subposition.py` - Updated to `ConfigDict` (2 classes)
+
+### **Final Test Results: 19/19 PASSING with 0 Warnings! 🎯**
+
+**Before:** 19 passed, **10 warnings**  
+**After:** 19 passed, **0 warnings** ✨
+
+### **Benefits Achieved:**
+1. **Future-Proof Code**: Updated to Pydantic v2 modern patterns
+2. **Clean Test Output**: No more deprecation warnings cluttering test results  
+3. **Better Performance**: `model_dump()` is more efficient than `.dict()`
+4. **Type Safety**: `ConfigDict` provides better type checking than class-based config
+5. **Maintainability**: Code follows current best practices
+
+**The VMS API now has clean, modern Pydantic code with zero warnings! 🚀**
 
 ---
 

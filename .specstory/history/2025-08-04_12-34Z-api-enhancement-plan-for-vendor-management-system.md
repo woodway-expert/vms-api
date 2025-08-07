@@ -703,6 +703,20 @@ _**Assistant**_
 
 ```
 
+```
+
+```
+
+```
+
+```
+
+```
+
+```
+I have applied the necessary fixes to `auth.py`, which should resolve the import errors. I've replaced the broad `models` import with a specific `user_model` import and added the missing `timedelta` import.
+
+I will now run the tests again to ensure that all issues are resolved and the test suite passes.
 
 ---
 

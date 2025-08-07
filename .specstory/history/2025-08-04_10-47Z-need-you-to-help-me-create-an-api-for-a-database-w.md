@@ -140,7 +140,78 @@ _**Assistant**_
 
 I can see the issue! The problem is with installing `psycopg2-binary` which is a PostgreSQL adapter, but you're likely using SQL Server. Since you're working on Windows and the schema looks like it's from SQL Server, let me fix this for you.
 
-The error occurs because `psycopg2-binary` requires PostgreSQL development headers that aren't available on your Windows system. Let me update the requirements to focus on SQL Server 
+The error occurs because `psycopg2-binary` requires PostgreSQL development headers that aren't available on your Windows system. Let me update the requirements to focus on SQL Server instead: Let me fix the `requirements.txt` file to remove the problematic PostgreSQL dependency and focus on SQL Server: 
+```
+
+```
+Now let's try installing the dependencies again: Let me use the Python package installation tool instead: Great! Now let's install the packages: Perfect! The packages are now installed successfully. Let me also check if there are any issues with the configuration: Now let's test if the API can start properly: Let me check what the actual error is by running it with more verbose output: Let me try a simpler approach to test the installation: Let me try a different approach to see what's installed: Great! All the packages are installed correctly. Now let me create a simple test to see what's happening with the import: Now let's run the test: Excellent! Now I can see the issue. The API is working fine, but there's a missing dependency for email validation. Let me fix this: Now let's test again: Perfect! Now I can see exactly what the issue is. The API code is working fine, but it's trying to connect to a database server that doesn't exist because we're using the default configuration. The issue is that the main.py file tries to create database tables immediately on import, which requires a valid database connection.
+
+Let me fix this by modifying the main.py file to not create tables automatically, and instead provide better error handling: 
+```
+
+```
+Now let's test the setup again: Perfect! Now the API is working correctly. Let me also update the `requirements.txt` to include the email-validator: 
+```
+
+```
+Now let's try to start the API server to confirm everything is working: Excellent! The API is now running successfully! 🎉
+
+## 🎯 **Summary - You've Successfully Fixed the Installation Issue!**
+
+### **✅ What Was Fixed:**
+
+1. **PostgreSQL Dependency Removed**: The issue was that `psycopg2-binary` (PostgreSQL adapter) was trying to install but failing because PostgreSQL development headers weren't available on Windows.
+
+2. **Email Validator Added**: The API also needed `email-validator` for Pydantic email validation.
+
+3. **Database Connection Handling**: Modified the app to gracefully handle database connection issues during startup.
+
+### **🚀 Your VMS API is Now Running!**
+
+- **API Server**: http://localhost:8000
+- **Interactive Documentation**: http://localhost:8000/docs  
+- **Alternative Documentation**: http://localhost:8000/redoc
+
+### **⚠️ Next Steps - Database Configuration:**
+
+The API is running, but you'll need to configure your database connection to use the full functionality. Here's how:
+
+1. **Copy the environment template:**
+   ```powershell
+   Copy-Item .env.example .env
+   ```
+
+2. **Edit the `.env` file** with your actual database details:
+   ```bash
+   # For SQL Server
+   DATABASE_URL=mssql+pymssql://your_username:your_password@your_server/your_database
+   
+   # Example:
+   DATABASE_URL=mssql+pymssql://sa:MyPassword123@localhost:1433/vms_database
+   ```
+
+3. **Once configured, restart the API:**
+   ```powershell
+   C:/Users/WW-SYSADMIN/Documents/GitHub/vms-api/.venv/Scripts/python.exe run.py
+   ```
+
+### **🧪 Test the API Now:**
+
+You can test the API even without a database by visiting:
+- http://localhost:8000/docs - Interactive API documentation
+- http://localhost:8000/health - Health check endpoint
+- http://localhost:8000/ - Basic API info
+
+The API endpoints for currencies, customers, and orders will work once you configure the database connection!
+
+### **🔧 Alternative Database Options:**
+
+If you don't have SQL Server available, you can:
+1. Use **SQLite** for testing (modify DATABASE_URL to `sqlite:///./test.db`)
+2. Use **Docker** with the provided `docker-compose.yml`
+3. Set up **SQL Server Express** or use **Azure SQL Database**
+
+Your VMS API is now ready to handle your database schema! 🎊
 
 ---
 

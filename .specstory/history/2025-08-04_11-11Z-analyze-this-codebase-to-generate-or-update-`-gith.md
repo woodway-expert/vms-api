@@ -128,7 +128,52 @@ I'll add guidance for comprehensive testing and maintaining clean folder structu
 ```
 
 ```
+Let me fix the markdown linting issue by adding the proper language specification to the code block: 
+```
 
+```
+Perfect! I've successfully added comprehensive testing requirements and code organization guidelines to your Copilot instructions. Here's what was added:
+
+## New Sections Added:
+
+### Testing Requirements
+**Comprehensive Test Coverage:**
+- Mandates unit tests, integration tests, schema validation tests, and error handling tests
+- Ensures all new features come with proper test coverage
+- Covers all aspects of the FastAPI application
+
+**Test Structure Pattern:**
+- Provides concrete examples of test naming conventions
+- Shows the expected test function patterns
+- Guides consistent test organization
+
+**Test Database Setup:**
+- Explains the SQLite override pattern used in the project
+- Emphasizes test isolation and cleanup
+
+### Code Organization
+**Folder Structure Maintenance:**
+- Visual representation of the expected project structure
+- Clear guidelines for where different types of code belong
+- Instructions for extending the structure with new modules
+
+**File Naming Conventions:**
+- Specific rules for models (singular), schemas (matching models), routers (plural), and tests
+- Ensures consistency across the codebase
+
+**Module Organization Rules:**
+- One entity per file principle
+- Import requirements for Alembic
+- Focus on single responsibility for routers
+
+## Benefits for AI Agents:
+
+1. **Quality Assurance**: Copilot will now automatically include comprehensive tests when implementing new features
+2. **Consistency**: Clear guidelines ensure new code follows existing patterns
+3. **Maintainability**: Proper organization rules prevent code sprawl and confusion
+4. **Documentation**: Test patterns serve as living documentation of expected behavior
+
+These additions ensure that any AI agent working on the project will maintain high code quality standards and keep the codebase well-organized and thoroughly tested.
 
 ---
 

@@ -1,32 +1,33 @@
 @echo off
-echo Setting up VMS API...
+echo VMS API - Setup Instructions
+echo =================================
 
 echo.
-echo 1. Installing Python dependencies...
-pip install -r requirements.txt
+echo 1. Install .NET 8 SDK
+echo    Download from: https://dotnet.microsoft.com/download/dotnet/8.0
+echo.
 
+echo 2. Update Database Connection String
+echo    Edit appsettings.json and appsettings.Development.json
+echo    Replace YOUR_SERVER and YOUR_DB with your actual values
 echo.
-echo 2. Creating .env file from template...
-if not exist .env (
-    copy .env.example .env
-    echo Please edit .env file with your database configuration
-) else (
-    echo .env file already exists
-)
 
+echo 3. Restore NuGet Packages
+echo    Run: dotnet restore
 echo.
-echo 3. Testing the installation...
-python -c "from app.main import app; print('Installation successful!')"
 
+echo 4. Build the Project
+echo    Run: dotnet build
 echo.
-echo Setup complete!
+
+echo 5. Run the Application
+echo    Run: dotnet run
 echo.
-echo To start the API:
-echo   python run.py
+
+echo 6. Optional: Scaffold All Models from Database
+echo    Run the following command (replace connection string):
+echo    dotnet ef dbcontext scaffold "Server=YOUR_SERVER;Database=YOUR_DB;Trusted_Connection=True;TrustServerCertificate=True;" Microsoft.EntityFrameworkCore.SqlServer -o Data/Models -f --context AppDbContext --context-dir Data
 echo.
-echo Or with uvicorn directly:
-echo   uvicorn app.main:app --reload
-echo.
-echo API Documentation will be available at:
-echo   http://localhost:8000/docs
+
+echo Press any key to continue...
 pause
